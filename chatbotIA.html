@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chatbot IA</title>
+</head>
+<body>
+    <h1>Chatbot IA expulsões serviço Público</h1>
+    <textarea id="pergunta" rows="4" cols="50" placeholder="Digite sua pergunta sobre o arquivo expulsos.csv"></textarea><br>
+    <button onclick="enviarPergunta()">Enviar</button>
+    <div id="resposta"></div>
+
+    <script>
+        function enviarPergunta() {
+            const pergunta = document.getElementById("pergunta").value;
+
+            fetch("/", {
+                method: "POST",
+                headers: {
+                  'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: "pergunta=" + encodeURIComponent(pergunta), // Envia no formato URL encoded
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(data.error){
+                    document.getElementById("resposta").innerText = "Erro: " + data.error;
+                }else{
+                  document.getElementById("resposta").innerText = data.resposta;
+                }
+            })
+            .catch(error => {
+                document.getElementById("resposta").innerText = "Erro na requisição: " + error;
+            });
+        }
+    </script>
+</body>
+</html>
